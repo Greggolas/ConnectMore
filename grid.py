@@ -40,19 +40,35 @@ class Grid:
 
         return False
 
+    def _all_winners(self, list):
+        return all(i == list[0] and i for i in list)
+
     # working on this
     def row_check(self, index):
         # check each cell in row
         pass
 
-    def col_check(self):
-        # check each cell in column
-        pass
+    def col_check(self, x):
+        col = self.layout[x]
+        col_vals = []
+        for y in col:
+            cell = col[y]
+            if cell:
+                col_vals.append(cell.value)
+            else:
+                return False
+            
+        return self._all_winners(col_vals)
 
     def diag_check(self):
         pass
     
     def win_check(self):
-        # for each index check columns and rows
-        pass
+        for x in self.indexes:
+            col_win = self.col_check(x)
+
+            if col_win:
+                return True
+        
+        return False
 

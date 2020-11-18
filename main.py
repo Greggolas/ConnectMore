@@ -14,7 +14,8 @@ class Game:
 
     def start(self):
         clear()
-        size = input("Grid Size: ")
+        self.is_over = False
+        size = int(input("Grid Size: "))
         self.grid = Grid(int(size))
 
         while not self.is_over:
@@ -22,17 +23,20 @@ class Game:
             self.grid.paint()
             player = self.player_turn
             print(f"\nPlayer {player} Turn")
-            column = input(f"Drop Location (0-{size}): ")
+            column = input(f"Drop Location (0-{size-1}): ")
             
             if self.grid.play(column, player):
-                # check for win
-                # break if win               
-                self.player_turn = 2 if player == 1 else 1
+                # end on win confirmation
+                self.is_over = self.grid.win_check()
 
-        print("Player {self.player_turn} Wins!!!")
-        confirm = input("Press any key to play again (q to exit)")
+                if not self.is_over:
+                    self.player_turn = 2 if player == 1 else 1
 
-        if confirm == "q":
+        print(f"\nPlayer {self.player_turn} Wins!!!")
+        print("Press Enter to play again (or type quit to exit)")
+        confirm = input()
+
+        if confirm == "quit":
             exit(0)
 
         self.start()
